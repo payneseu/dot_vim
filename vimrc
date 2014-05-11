@@ -386,3 +386,22 @@ noremap \m	:marks<CR>:normal `
 ""  taglist
 let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
 ":filetype
+"
+"http://foocoder.com/blog/mei-ri-vimcha-jian-dai-ma-sou-suo-ctlsf-dot-vim.html/
+"https://github.com/rking/ag.vim
+let g:ackprg = 'ag --nogroup --nocolor --column'
+
+
+
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" This is the Vundle package, which can be found on GitHub.
+" For GitHub repos, you specify plugins using the
+" 'user/repository' format
+Plugin 'gmarik/vundle'
+
+filetype plugin indent on
+Bundle 'rking/ag.vim'
