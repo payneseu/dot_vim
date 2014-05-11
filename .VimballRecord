@@ -1,1 +1,0 @@
-tagbar.vmb: call delete('/Users/peli3/.vim/README.md')|call delete('/Users/peli3/.vim/autoload/tagbar.vim')|call delete('/Users/peli3/.vim/doc/tagbar.txt')|call delete('/Users/peli3/.vim/plugin/tagbar.vim')|call delete('/Users/peli3/.vim/syntax/tagbar.vim')
