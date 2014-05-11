@@ -176,8 +176,8 @@ nmap <Leader>e	:e<Space>
 nmap <Leader>sw	:w !sudo tee %<CR>
 ""
 "" shourt for buffer operations
-nmap <S-TAB>	:bp<CR>
-nmap <TAB>		:bn<CR>
+"nmap <S-TAB>	:bp<CR>
+"nmap <TAB>		:bn<CR>
 nmap <A-SPACE>	:b#<CR>
 nmap <Leader>l	:ls<CR>
 nmap <Leader>d	:buffers<CR>:bun<Space>
@@ -326,8 +326,8 @@ let showmarks_hlline_upper = 1
 hi ShowMarksHLl ctermbg=Yellow   ctermfg=Black  guibg=#FFDB72    guifg=Black
 hi ShowMarksHLu ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=Black
 "
-"noremap <Leader>mb	:MarksBrowser<CR>
-noremap \m	:marks<CR>:normal `
+noremap <Leader>m	:MarksBrowser<CR>
+"noremap \m	:marks<CR>:normal `
 
 
 """"================================================================================""""
@@ -387,13 +387,13 @@ noremap \m	:marks<CR>:normal `
 let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
 ":filetype
 "
+noremap <Leader>f	:TagbarToggle<CR><C-w>l
+
+"
 "http://foocoder.com/blog/mei-ri-vimcha-jian-dai-ma-sou-suo-ctlsf-dot-vim.html/
 "https://github.com/rking/ag.vim
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
-
-
-set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -405,3 +405,5 @@ Plugin 'gmarik/vundle'
 
 filetype plugin indent on
 Bundle 'rking/ag.vim'
+
+"""jfojfoejofijeojfoiejfoe
