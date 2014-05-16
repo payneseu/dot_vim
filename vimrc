@@ -137,9 +137,11 @@ set confirm
 
 if has("gui_running")
 	set macmeta  "" Macvim only
-	colorscheme evening
+	"colorscheme evening
+	colorscheme molokai
 	set cursorline
-	set guifont=courier_new:h11
+"	set guifont=courier_new:h12
+	set guifont=Source\ Code\ Pro\ Light:h12
 	set guicursor=a:blinkon0
 	set guioptions=eac
 	set lines=60 columns=150
@@ -157,13 +159,15 @@ nmap <A-k>  <C-W>k
 "" move cursor and scroll screen vertical
 nmap <C-L>	<C-Y>
 nmap <C-H>	<C-E>
-nmap <C-K>	{
-nmap <C-J>	}
+"nmap <C-K>	{
+"nmap <C-J>	}
 "" page up/half page up, page down
-nmap <SPACE>	<C-F>
-nmap <BS>		<C-B>
-noremap J	<C-D>
-noremap K	<C-U>
+nmap <SPACE>	<C-D>
+nmap <BS>		<C-U>
+"noremap J	<C-D>
+"noremap K	<C-U>
+nmap <D-j>	}
+nmap <D-k>	{
 "" swith tabs
 noremap <A-n>	gt
 noremap <A-p>	gT
@@ -178,6 +182,9 @@ nmap <Leader>sw	:w !sudo tee %<CR>
 "" shourt for buffer operations
 "nmap <S-TAB>	:bp<CR>
 "nmap <TAB>		:bn<CR>
+nmap <TAB>	gt
+nmap <S-TAB>	gT
+
 nmap <A-SPACE>	:b#<CR>
 nmap <Leader>l	:ls<CR>
 nmap <Leader>d	:buffers<CR>:bun<Space>
@@ -258,8 +265,8 @@ vmap <C-j>	}
 ""================================
 "autocmd BufEnter *.log set guifont=courier_new:h12
 "augroup filetypedetect
-"au BufNewFile,BufRead *.log source ~/.vim/ftplugin/logfile.vim
-"au BufNewFile,BufRead *.log.[0-9] source ~/.vim/ftplugin/logfile.vim
+au BufNewFile,BufRead *.log source ~/.vim/ftplugin/logfile.vim
+au BufNewFile,BufRead *.log.[0-9] source ~/.vim/ftplugin/logfile.vim
 "augroup END
 ""=========================
 
@@ -272,7 +279,7 @@ autocmd InsertLeave,BufWritePost,CursorHold * if &diff == 1 | diffupdate | endif
 autocmd BufWinEnter *.svn-base setlocal nomodifiable 
 " in help windows press q to quit
 autocmd BufRead $VIMRUNTIME/doc/*.txt noremap <buffer> <silent> q :q<CR>
-autocmd BufRead "$HOME/.vim/doc/*.txt" noremap <buffer> <silent> q :q<CR>
+autocmd BufRead $HOME/.vim/**/*.txt noremap <buffer> <silent> q :q<CR>
 
 
 "" ===============================================================================
@@ -405,5 +412,44 @@ Plugin 'gmarik/vundle'
 
 filetype plugin indent on
 Bundle 'rking/ag.vim'
+Bundle 'octol/vim-cpp-enhanced-highlight'
+Bundle 'dyng/ctrlsf.vim'
 
-"""jfojfoejofijeojfoiejfoe
+""https://github.com/zaiste/vimified/issues/6
+" fix Bundle install doesn't work in Macvim
+
+""" Ag / ack /CtrlSF
+let g:aghighlight=1
+
+"colorscheme molokai 
+" vim youdao 
+"https://github.com/ianva/vim-youdao-translater
+Bundle 'ianva/vim-youdao-translater'
+vnoremap <silent> <C-T> <Esc>:Ydv<CR> 
+nnoremap <silent> <C-T> <Esc>:Ydc<CR> 
+noremap <leader>yd :Yde<CR>
+
+Bundle 'flazz/vim-colorschemes'
+
+"http://foocoder.com/blog/mei-ri-vimcha-jian-suo-jin-xian-shi-vim-indent-guides.html/
+Bundle 'nathanaelkane/vim-indent-guides'
+"Bundle 'vim-scripts/cmdline-completion'
+Bundle 'junegunn/goyo.vim'
+
+
+noremap <A-.> :Gtags<CR>
+noremap <A-r> :Gtags -r<CR>
+noremap <A-o> :Gtags -s<CR>
+noremap <A-g> :Gtags -g<CR> 
+
+
+Bundle 'vim-scripts/vcscommand.vim'
+let VCSCommandSVKExec='disabled no such executable'
+
+" disable highlight in current search
+nmap \h :nohlsearch<CR>
+
+"nmap <Leader>ag		:Ag:
+
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'tpope/vim-repeat'
