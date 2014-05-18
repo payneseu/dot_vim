@@ -113,6 +113,9 @@ function s:initialize()
   call l9#defineVariableDefault('g:fuf_help_prompt'     , '>Help[]>')
   call l9#defineVariableDefault('g:fuf_help_switchOrder', 160)
   "---------------------------------------------------------------------------
+  call l9#defineVariableDefault('g:fuf_marklist_prompt'     , '>Mark-List[]>')
+  call l9#defineVariableDefault('g:fuf_marklist_switchOrder', 170)
+  "---------------------------------------------------------------------------
   command! -bang -narg=0 FufEditDataFile call fuf#editDataFile()
   command! -bang -narg=0 FufRenewCache   call s:renewCachesOfAllModes()
   "---------------------------------------------------------------------------
@@ -132,6 +135,7 @@ function s:initialize()
   call fuf#addMode('quickfix')
   call fuf#addMode('line')
   call fuf#addMode('help')
+  call fuf#addMode('marklist')
   call fuf#addMode('givenfile')
   call fuf#addMode('givendir')
   call fuf#addMode('givencmd')

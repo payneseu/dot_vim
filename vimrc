@@ -164,8 +164,8 @@ nmap <C-H>	<C-E>
 "" page up/half page up, page down
 nmap <SPACE>	<C-D>
 nmap <BS>		<C-U>
-"noremap J	<C-D>
-"noremap K	<C-U>
+noremap J	<C-D>
+noremap K	<C-U>
 nmap <D-j>	}
 nmap <D-k>	{
 "" swith tabs
@@ -182,12 +182,13 @@ nmap <Leader>sw	:w !sudo tee %<CR>
 "" shourt for buffer operations
 "nmap <S-TAB>	:bp<CR>
 "nmap <TAB>		:bn<CR>
-nmap <TAB>	gt
-nmap <S-TAB>	gT
+nmap <A-TAB>	gt
+nmap <A-S-TAB>	gT
+"nmap <S-TAB>	gT
 
 nmap <A-SPACE>	:b#<CR>
 nmap <Leader>l	:ls<CR>
-nmap <Leader>d	:buffers<CR>:bun<Space>
+"nmap <Leader>d	:buffers<CR>:bun<Space>
 nmap <Leader>b	:buffers<CR>:buffer<Space>
 nmap <Leader>sb	:buffers<CR>:sb<Space>
 ""
@@ -195,7 +196,7 @@ nmap <Leader>sb	:buffers<CR>:sb<Space>
 noremap <Leader>r	:registers<CR>
 "" 
 "nmap <Leader>,	:source ~/.vimrc<CR>
-nmap <Leader>x	:!
+nmap <Leader>x	:<C-p>
 "
 " resize window 
 nmap +	<C-w>3+
@@ -282,6 +283,10 @@ autocmd BufRead $VIMRUNTIME/doc/*.txt noremap <buffer> <silent> q :q<CR>
 autocmd BufRead $HOME/.vim/**/*.txt noremap <buffer> <silent> q :q<CR>
 
 
+vmap <Leader>y	"*y
+nmap <Leader>Y	"*yy
+nmap <Leader>p	"*p
+
 "" ===============================================================================
 "	some tips for remapping
 "	
@@ -333,7 +338,7 @@ let showmarks_hlline_upper = 1
 hi ShowMarksHLl ctermbg=Yellow   ctermfg=Black  guibg=#FFDB72    guifg=Black
 hi ShowMarksHLu ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=Black
 "
-noremap <Leader>m	:MarksBrowser<CR>
+noremap <Leader>m	:MarksBrowser<CR>/^
 "noremap \m	:marks<CR>:normal `
 
 
@@ -345,8 +350,8 @@ noremap <Leader>m	:MarksBrowser<CR>
   let g:fuf_mrufile_maxItem = 400
   let g:fuf_mrucmd_maxItem = 400
   nnoremap <silent> sj     :FufBuffer<CR>
-  nnoremap <silent> sK     :FufFileWithCurrentBufferDir<CR>
-  nnoremap <silent> sk     :FufFileWithFullCwd<CR>
+  nnoremap <silent> sk     :FufFileWithCurrentBufferDir<CR>
+  nnoremap <silent> sK     :FufFileWithFullCwd<CR>
   nnoremap <silent> s<C-k> :FufFile<CR>
   nnoremap <silent> sl     :FufCoverageFileChange<CR>
   nnoremap <silent> sL     :FufCoverageFileChange<CR>
@@ -381,9 +386,10 @@ noremap <Leader>m	:MarksBrowser<CR>
   nnoremap <silent> sp     :FufChangeList<CR>
   nnoremap <silent> sq     :FufQuickfix<CR>
   nnoremap <silent> sy     :FufLine<CR>
-  nnoremap <silent> sh     :FufHelp<CR>
+"  nnoremap <silent> sh     :FufHelp<CR>
   nnoremap <silent> se     :FufEditDataFile<CR>
   nnoremap <silent> sr     :FufRenewCache<CR>
+  nnoremap <silent> sh     :FufMarkList<CR>
 ""  FuzzyFinder example vimrc 
 """"================================================================================""""
 """"================================================================================""""
@@ -395,6 +401,13 @@ let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
 ":filetype
 "
 noremap <Leader>f	:TagbarToggle<CR><C-w>l
+
+nmap \h :nohlsearch<CR>
+
+noremap <A-.> :Gtags<CR>
+noremap <A-r> :Gtags -r<CR>
+noremap <A-o> :Gtags -s<CR>
+noremap <A-g> :Gtags -g<CR> 
 
 "
 "http://foocoder.com/blog/mei-ri-vimcha-jian-dai-ma-sou-suo-ctlsf-dot-vim.html/
@@ -424,10 +437,10 @@ let g:aghighlight=1
 "colorscheme molokai 
 " vim youdao 
 "https://github.com/ianva/vim-youdao-translater
-Bundle 'ianva/vim-youdao-translater'
-vnoremap <silent> <C-T> <Esc>:Ydv<CR> 
-nnoremap <silent> <C-T> <Esc>:Ydc<CR> 
-noremap <leader>yd :Yde<CR>
+"Bundle 'ianva/vim-youdao-translater'
+"vnoremap <silent> <C-T> <Esc>:Ydv<CR> 
+"nnoremap <silent> <C-T> <Esc>:Ydc<CR> 
+"noremap <leader>yd :Yde<CR>
 
 Bundle 'flazz/vim-colorschemes'
 
@@ -436,20 +449,20 @@ Bundle 'nathanaelkane/vim-indent-guides'
 "Bundle 'vim-scripts/cmdline-completion'
 Bundle 'junegunn/goyo.vim'
 
-
-noremap <A-.> :Gtags<CR>
-noremap <A-r> :Gtags -r<CR>
-noremap <A-o> :Gtags -s<CR>
-noremap <A-g> :Gtags -g<CR> 
-
-
+"" ==============  VCSCommand.vim =====================
 Bundle 'vim-scripts/vcscommand.vim'
-let VCSCommandSVKExec='disabled no such executable'
-
-" disable highlight in current search
-nmap \h :nohlsearch<CR>
-
+"let VCSCommandSVKExec='disabled no such executable'
+let VCSCommandDeleteOnHide=1	
+let VCSCommandDisableMappings=1
+"let VCSCommandEnableBufferSetup=1
+nmap <Leader>sd	:VCSVimDiff<CR>
+augroup VCSCommand
+	au User VCSBufferCreated silent! nmap <unique> <buffer> q :bwipeout<cr> | setlocal nomodifiable
+augroup END
+nmap <Leader>dg		:diffget<CR>
 "nmap <Leader>ag		:Ag:
 
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'tpope/vim-repeat'
+Bundle 'vim-scripts/YankRing.vim'
+
