@@ -14,6 +14,7 @@ syn match logDebug /\(DEBUG.*\)\@<=\[[^[]*\] - .*$/
 
 syn match logCsfEccApi /\[csf.ecc.api\]/
 syn match logCsfEccEvt /\[csf.ecc.evt\]/
+syn match logCsfEcc /\[csf.ecc\]/
 
 hi def link logError ErrorMsg
 hi def link logWarn  WarningMsg
