@@ -57,7 +57,7 @@ let s:MODE_NAME = expand('<sfile>:t:r')
 "endfunction
 "
 ""
-function s:parseMarksLine(line, bufnrPrev)
+"function s:parseMarksLine(line, bufnrPrev)
 "  "return matchlist(a:line, '^\(.\)\s\+\(\d\+\)\s\(.*\)$')
 "  let elements = matchlist(a:line, '\v^\s*(.)\s+(\d+)\s+(\d+)\s*(.*)$')
 "  if empty(elements)
@@ -77,10 +77,10 @@ function s:parseMarksLine(line, bufnrPrev)
 "        \   'lnum'  : elements[2],
 "        \   'fname_text'  : elements[3],
 "        \ }
-endfunction
+"endfunction
 
 "
-function s:makeItem(line, bufnrPrev)
+"function s:makeItem(line, bufnrPrev)
 "  let parsed = s:parseMarksLine(a:line, a:bufnrPrev)
 "  if empty(parsed)
 "    return {}
@@ -90,19 +90,24 @@ function s:makeItem(line, bufnrPrev)
 "  let item.lnum = parsed.lnum
 "  let item.fname = parsed.fname_text
 "  return item
-endfunction
+"endfunction
 
 
-function s:findItem(items, word)
-  for item in a:items
-    if item.word ==# a:word
-      return item
-    endif
-  endfor
-  return {}
-endfunction
+"function s:findItem(items, word)
+"  for item in a:items
+"    if item.word ==# a:word
+"      return item
+"    endif
+"  endfor
+"  return {}
+"endfunction
 
-
+"function s:sortDict(self.items)
+"	let emement
+"	let index = 0
+"	for index < len(self.items)
+"
+"endfunction
 
 " }}}1
 "=============================================================================
@@ -155,18 +160,7 @@ endfunction
 "
 function s:handler.onOpen(word, mode)
   call fuf#prejump(a:mode)
-  "call filter(self.items, 'v:val.word ==# a:word')
-"  let item = s:findItem(self.items, a:word)
-"  let marks = values(a:word)[0]
-"  let mark = matchlist(a:word, '\v^\s*(.).*$')
   let elements = matchlist(a:word, '\v^\s*([^\s])\s+(\d+)\s+(\d+)\s*(.*)$')
-"  redir! > ./a_match
-"  echo elements[0] 
-"  echo elements[1] 
-"  echo elements[2] 
-"  echo elements[3] 
-"  echo elements[4] 
-"  redir END 
   execute 'normal `' . elements[1] 
 endfunction
 
@@ -177,16 +171,13 @@ function s:handler.onModeEnterPre()
   :silent marks
   redir END
   let self.items = split(result, "\n")
-  call filter(self.items,'v:key>0')
+  call filter(self.items, 'v:val =~ "^\\s\\D"')
+"	let self.items = s:sortDict(self.items)
 endfunction
 
 "
 function s:handler.onModeEnterPost()
-"  call map(self.items, 's:makeItem(v:val, self.bufNrPrev)')
   call map(self.items, 'fuf#makeNonPathItem(v:val, "")')
-"  call filter(self.items, '!empty(v:val)')
-"  call reverse(self.items)
-"  let tab = repeat(' ', getbufvar(self.bufNrPrev, '&tabstop'))
   call fuf#mapToSetSerialIndex(self.items, 1)
   call map(self.items, 'fuf#setAbbrWithFormattedWord(v:val, 0)')
 endfunction
