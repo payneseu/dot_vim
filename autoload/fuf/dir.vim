@@ -112,7 +112,7 @@ endfunction
 
 "
 function s:handler.onOpen(word, mode)
-  execute ':cd ' . fnameescape(a:word)
+  execute ':lcd ' . fnameescape(a:word)
 endfunction
 
 "

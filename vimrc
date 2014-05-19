@@ -266,8 +266,8 @@ vmap <C-j>	}
 ""================================
 "autocmd BufEnter *.log set guifont=courier_new:h12
 "augroup filetypedetect
-au BufNewFile,BufRead *.log source ~/.vim/ftplugin/logfile.vim
-au BufNewFile,BufRead *.log.[0-9] source ~/.vim/ftplugin/logfile.vim
+"au BufNewFile,BufRead *.log source ~/.vim/ftplugin/logfile.vim
+"au BufNewFile,BufRead *.log.[0-9] source ~/.vim/ftplugin/logfile.vim
 "augroup END
 ""=========================
 
@@ -410,9 +410,6 @@ noremap <A-o> :Gtags -s<CR>
 noremap <A-g> :Gtags -g<CR> 
 
 "
-"http://foocoder.com/blog/mei-ri-vimcha-jian-dai-ma-sou-suo-ctlsf-dot-vim.html/
-"https://github.com/rking/ag.vim
-let g:ackprg = 'ag --nogroup --nocolor --column'
 
 filetype off
 set rtp+=~/.vim/bundle/vundle/
@@ -428,12 +425,20 @@ Bundle 'rking/ag.vim'
 Bundle 'octol/vim-cpp-enhanced-highlight'
 Bundle 'dyng/ctrlsf.vim'
 
+"http://foocoder.com/blog/mei-ri-vimcha-jian-dai-ma-sou-suo-ctlsf-dot-vim.html/
+"https://github.com/rking/ag.vim
+let g:ackprg = 'ag --nogroup --column'
 ""https://github.com/zaiste/vimified/issues/6
 " fix Bundle install doesn't work in Macvim
 
 """ Ag / ack /CtrlSF
 let g:aghighlight=1
-
+let g:ctrlsf_auto_close = 0
+let g:ctrlsf_selected_line_hl = 'op'
+nmap <Leader>a		:Ag!<SPACE>
+nmap <Leader>c		:CtrlSF<SPACE>
+nmap <Leader>c		:CtrlSFOpen<SPACE>
+nmap <Leader>c		:CtrlSFClose<SPACE>
 "colorscheme molokai 
 " vim youdao 
 "https://github.com/ianva/vim-youdao-translater
@@ -460,7 +465,8 @@ augroup VCSCommand
 	au User VCSBufferCreated silent! nmap <unique> <buffer> q :bwipeout<cr> | setlocal nomodifiable
 augroup END
 nmap <Leader>dg		:diffget<CR>
-"nmap <Leader>ag		:Ag:
+
+
 
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'tpope/vim-repeat'
@@ -490,3 +496,57 @@ endfunction
 
 nmap ss	:split<CR>
 nmap vv :vertical split<CR>
+
+"let g:agprg=
+Bundle 'mileszs/ack.vim'
+
+"""================================================================================================"""
+"""=================================== Quickfix buffer ============================================"""
+"""================================================================================================"""
+""""""{{{1
+"http://vim.wikia.com/wiki/Show_only_lines_in_quickfix_list_for_current_buffer 
+if ! exists('g:foldmisses_context')
+  let g:foldmisses_context = 0
+endif
+
+" Add manual fold from line1 to line2, inclusive.
+function! s:Fold(line1, line2)
+  if a:line1 < a:line2
+    execute a:line1.','.a:line2.'fold'
+  endif
+endfunction
+
+" Return list of line numbers for current buffer found in quickfix list.
+function! s:GetHitLineNumbers(list)
+  let result = []
+  for d in a:list
+    if d.valid && d.bufnr == bufnr('')
+      call add(result, d.lnum)
+    endif
+  endfor
+  return result
+endfunction
+
+function! s:FoldMisses(list, context)
+  setlocal foldmethod=manual
+  normal! zE
+  let extra = a:context == 99999 ? g:foldmisses_context : a:context
+  let last = 0
+  for lnum in s:GetHitLineNumbers(a:list)
+    let start = last==0 ? 1 : last+1+extra
+    call s:Fold(start, lnum-1-extra)
+    let last = lnum
+  endfor
+  call s:Fold(last+1+extra, line('$'))
+endfunction
+
+":[N]FoldMisses [N]     Show only the lines (and surrounding [N] lines
+":[N]FoldLMisses [N]    of context) in the current buffer that appear
+"                       in the quickfix / location list.
+"                       Missed, error-free lines are folded away.
+command! -bar -count=99999 FoldMisses call s:FoldMisses(getqflist(), <count>)
+command! -bar -count=99999 FoldLMisses call s:FoldMisses(getloclist(0), <count>)
+"""""""""}}}1
+"""================================================================================================"""
+"""=================================== Quickfix buffer ============================================"""
+"""================================================================================================"""
